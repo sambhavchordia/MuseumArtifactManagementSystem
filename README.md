@@ -6,7 +6,6 @@ Features:
 	•	Comprehensive artifact cataloging.
 	•	Dynamic storytelling and educational features.
 	•	Enhanced visitor engagement tracking.
-	•	Robust security measures.
 	•	Valuable reporting and insights.
 
 Usage:
