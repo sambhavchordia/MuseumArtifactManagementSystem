@@ -8,7 +8,7 @@ public class AboutPage extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         initComponents();
         pack();
-        setSize(600, 400); // Set the preferred size
+        setSize(600, 400); 
         setLocationRelativeTo(null);
     }
 
