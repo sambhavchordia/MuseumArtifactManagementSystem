@@ -16,7 +16,12 @@ class DatabaseUtil implements DatabaseConnection {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        try {
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Database connection failed: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            throw e; // Re-throw to ensure that upper layers can handle it too if necessary
+        }
     }
 }
 
@@ -66,15 +71,25 @@ class SignInPanel extends AuthPanel {
     }
 
     protected void handleAction(ActionEvent event) {
-        // Sign-in logic
+        String username = usernameField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(parentFrame, "Username and password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Assume sign-in logic is successful
         showSuccessMessage("Sign In Successful!");
         parentFrame.dispose();
-        new HomePageForm().setVisible(true);
+        new HomePageForm().setVisible(true);  // Assuming HomePageForm is the home screen
     }
 }
 
 // SignUp panel implementation
 class SignUpPanel extends AuthPanel {
+    private JPasswordField confirmPasswordField;
+
     public SignUpPanel(JFrame parentFrame) {
         super(parentFrame);
         initComponents();
@@ -91,7 +106,8 @@ class SignUpPanel extends AuthPanel {
         passwordField = new JPasswordField();
         add(passwordField);
         add(new JLabel("Confirm Password:"));
-        add(new JPasswordField());
+        confirmPasswordField = new JPasswordField();
+        add(confirmPasswordField);
         actionButton = new JButton("Sign Up");
         add(actionButton);
     }
@@ -102,7 +118,24 @@ class SignUpPanel extends AuthPanel {
     }
 
     protected void handleAction(ActionEvent event) {
-        // Sign-up logic
+        String username = usernameField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+        String confirmPassword = new String(confirmPasswordField.getPassword()).trim();
+
+        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(parentFrame, "All fields must be filled.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            JOptionPane.showMessageDialog(parentFrame, "Passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Assume sign-up logic is successful
+        showSuccessMessage("Sign Up Successful!");
+        parentFrame.dispose();
+        new HomePageForm().setVisible(true);  // Assuming HomePageForm is the home screen
     }
 }
 
