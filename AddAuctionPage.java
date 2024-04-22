@@ -3,22 +3,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.*;
 
-// Add Auction page form class
+
 public class AddAuctionPage extends JFrame {
 
     public AddAuctionPage() {
         setTitle("Add Auction");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Dispose this frame only
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
         initComponents();
         pack();
         setLocationRelativeTo(null);
     }
 
-    // Initialize components
+    
     private void initComponents() {
-        JPanel mainPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // Grid layout with 2 columns and spacing
+        JPanel mainPanel = new JPanel(new GridLayout(0, 2, 10, 10)); 
 
-        // Labels and text fields for input
+        
         JLabel nameLabel = new JLabel("Auction Name:");
         JTextField nameField = new JTextField();
         JLabel dateLabel = new JLabel("Date (YYYY-MM-DD):");
@@ -32,7 +32,7 @@ public class AddAuctionPage extends JFrame {
         JLabel endPriceLabel = new JLabel("End Price:");
         JTextField endPriceField = new JTextField();
 
-        // Add labels and fields to the main panel
+        
         mainPanel.add(nameLabel);
         mainPanel.add(nameField);
         mainPanel.add(dateLabel);
@@ -46,10 +46,10 @@ public class AddAuctionPage extends JFrame {
         mainPanel.add(endPriceLabel);
         mainPanel.add(endPriceField);
 
-        // Button to add the auction
+        
         JButton addButton = new JButton("Add Auction");
         addButton.addActionListener((ActionEvent e) -> {
-            // Retrieve input values
+            
             String auctionName = nameField.getText();
             String date = dateField.getText();
             int locationID = Integer.parseInt(locationField.getText());
@@ -57,26 +57,26 @@ public class AddAuctionPage extends JFrame {
             double startPrice = Double.parseDouble(startPriceField.getText());
             double endPrice = Double.parseDouble(endPriceField.getText());
 
-            // Add the auction to the database
+            
             addAuction(auctionName, date, locationID, organizerID, startPrice, endPrice);
 
-            // Close the frame
+            
             dispose();
         });
 
-        // Add button to the main panel
+        
         mainPanel.add(addButton);
 
         getContentPane().add(mainPanel);
     }
 
-    // Add auction to the database
+    
     private void addAuction(String auctionName, String date, int locationID, int organizerID, double startPrice, double endPrice) {
         try {
-            // Connect to the database
+            
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/museum", "root", "shlok160404");
 
-            // Prepare the SQL statement
+            
             String query = "INSERT INTO Auctions (AuctionName, Date, LocationID, OrganizerID, StartPrice, EndPrice) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, auctionName);
@@ -86,14 +86,14 @@ public class AddAuctionPage extends JFrame {
             statement.setDouble(5, startPrice);
             statement.setDouble(6, endPrice);
 
-            // Execute the statement
+            
             statement.executeUpdate();
 
-            // Close the connection
+            
             statement.close();
             connection.close();
 
-            // Show success message
+            
             JOptionPane.showMessageDialog(this, "Auction added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -101,7 +101,7 @@ public class AddAuctionPage extends JFrame {
         }
     }
 
-    // Main method
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new AddAuctionPage().setVisible(true);
