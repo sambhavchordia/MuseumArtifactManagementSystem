@@ -3,22 +3,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.*;
 
-// Add employee form class
+
 public class AddEmployeePage extends JFrame {
 
     public AddEmployeePage() {
         setTitle("Add Employee");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Dispose this frame only
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
         initComponents();
-        setSize(400, 300); // Set window size
+        setSize(400, 300); 
         setLocationRelativeTo(null);
     }
 
-    // Initialize components
+    
     private void initComponents() {
-        JPanel mainPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // Grid layout with 2 columns and equal spacing
+        JPanel mainPanel = new JPanel(new GridLayout(0, 2, 10, 10)); 
 
-        // Labels and text fields for input
+        
         JLabel firstNameLabel = new JLabel("First Name:");
         JTextField firstNameField = new JTextField();
         JLabel lastNameLabel = new JLabel("Last Name:");
@@ -34,7 +34,7 @@ public class AddEmployeePage extends JFrame {
         JLabel phoneLabel = new JLabel("Phone:");
         JTextField phoneField = new JTextField();
 
-        // Add components to the panel
+        
         mainPanel.add(firstNameLabel);
         mainPanel.add(firstNameField);
         mainPanel.add(lastNameLabel);
@@ -50,7 +50,7 @@ public class AddEmployeePage extends JFrame {
         mainPanel.add(phoneLabel);
         mainPanel.add(phoneField);
 
-        // Button to add employee
+        
         JButton addButton = new JButton("Add Employee");
         addButton.addActionListener((e) -> {
             addEmployee(firstNameField.getText(), lastNameField.getText(), roleField.getText(),
@@ -58,7 +58,7 @@ public class AddEmployeePage extends JFrame {
         });
         mainPanel.add(addButton);
 
-        // Back button
+        
         JButton backButton = new JButton("Back");
         backButton.addActionListener(this::handleBack);
         mainPanel.add(backButton);
@@ -66,20 +66,20 @@ public class AddEmployeePage extends JFrame {
         getContentPane().add(mainPanel);
     }
 
-    // Handle button click events
+    
     private void handleBack(ActionEvent e) {
-        // Close this frame and show the EmployeesPage
+        
         dispose();
         new EmployeesPage().setVisible(true);
     }
 
-    // Add employee to the database
+    
     private void addEmployee(String firstName, String lastName, String role, String departmentID, String hireDate, String email, String phone) {
         try {
-            // Connect to the database
+            
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/museum", "root", "shlok160404");
 
-            // Prepare the query
+            
             String query = "INSERT INTO Employees (FirstName, LastName, Role, DepartmentID, HireDate, Email, Phone) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, firstName);
@@ -90,7 +90,7 @@ public class AddEmployeePage extends JFrame {
             statement.setString(6, email);
             statement.setString(7, phone);
 
-            // Execute the query
+            
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(this, "Employee added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -98,7 +98,7 @@ public class AddEmployeePage extends JFrame {
                 JOptionPane.showMessageDialog(this, "Failed to add employee", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
-            // Close the database connection
+            
             statement.close();
             connection.close();
         } catch (SQLException ex) {
@@ -107,7 +107,7 @@ public class AddEmployeePage extends JFrame {
         }
     }
 
-    // Main method
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new AddEmployeePage().setVisible(true);
